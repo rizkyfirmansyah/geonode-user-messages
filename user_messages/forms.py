@@ -23,7 +23,7 @@ class NewMessageForm(forms.Form):
         required=False,
     )
     subject = forms.CharField(label=_("Subject"))
-    content = forms.CharField(label=_("Content"), widget=forms.Textarea, widget=TinyMCE())
+    content = forms.CharField(label=_("Content"), widget=TinyMCE())
 
     def __init__(self, *args, **kwargs):
         self.sender = kwargs.pop("current_user")
