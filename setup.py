@@ -5,10 +5,12 @@ from setuptools import setup, find_packages
 
 setup(
     name="geonode-user-messages",
-    version="2.0.2",
+    version="2.1.0",
     author="Eldarion",
     author_email="development@eldarion.com",
     description="Fork of user-messages: a reusable private user messages application for Django",
+    maintainer="Rizky Firmansyah"
+    maintainer_email="rizky.firmansyah@wri.org"
     long_description=open("README.rst").read(),
     license="BSD",
     url="http://github.com/GeoNode/geonode-user-messages",
@@ -31,5 +33,6 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
     ]
 )

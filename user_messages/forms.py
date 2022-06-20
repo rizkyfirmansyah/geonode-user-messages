@@ -6,8 +6,8 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 
 from user_messages.models import Message
-
 from geonode.groups.models import GroupProfile
+from tinymce.widgets import TinyMCE
 
 
 class NewMessageForm(forms.Form):
@@ -23,11 +23,11 @@ class NewMessageForm(forms.Form):
         required=False,
     )
     subject = forms.CharField(label=_("Subject"))
-    content = forms.CharField(label=_("Content"), widget=forms.Textarea)
+    content = forms.CharField(label=_("Content"), widget=forms.Textarea, widget=TinyMCE())
 
     def __init__(self, *args, **kwargs):
         self.sender = kwargs.pop("current_user")
-        super(NewMessageForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if not self.sender.is_superuser:
             # show only public groups or ones that the current user is a
             # member of
@@ -40,17 +40,35 @@ class NewMessageForm(forms.Form):
             public_groups = GroupProfile.objects.exclude(
                 access="public-invite").exclude(access="private").values('group')
 
-            self.fields["to_groups"].queryset = GroupProfile.objects.filter(
+            results = GroupProfile.objects.filter(
                 Q(group__isnull=True) | Q(group__in=groups) |
                 Q(group__in=public_groups) | Q(group__in=group_list_all) |
                 Q(group__user=self.sender)
             ).distinct().order_by('title')
+
+            self.fields["to_groups"].queryset = [(i.slug, i.title) for i in results]
 
         self.fields["to_users"].queryset = get_user_model().objects.exclude(
             username="AnonymousUser").exclude(
             id=self.sender.id).exclude(
             is_active=False
         ).order_by('username')
+
+        self.fields["to_users"].widget.attrs.update(
+              {
+                  'class': 'selectpicker',
+                  'data-live-search': 'true',
+                  'data-selected-text-format': 'count > 4',
+                  'data-actions-box': 'true',
+                  'data-size': '5'})
+
+        self.fields["to_groups"].widget.attrs.update(
+                      {
+                          'class': 'selectpicker',
+                          'data-live-search': 'true',
+                          'data-selected-text-format': 'count > 4',
+                          'data-actions-box': 'true',
+                          'data-size': '5'})
 
     def clean(self):
         """Validate fields that depend on each other
@@ -60,7 +78,7 @@ class NewMessageForm(forms.Form):
 
         """
 
-        super(NewMessageForm, self).clean()
+        super().clean()
         users = self.cleaned_data.get("to_users")
         groups = self.cleaned_data.get("to_groups")
         if users is None and groups is None:
@@ -78,7 +96,7 @@ class MessageReplyForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.thread = kwargs.pop("thread")
         self.user = kwargs.pop("user")
-        super(MessageReplyForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def save(self):
         return Message.objects.new_reply(
