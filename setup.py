@@ -9,8 +9,8 @@ setup(
     author="Eldarion",
     author_email="development@eldarion.com",
     description="Fork of user-messages: a reusable private user messages application for Django",
-    maintainer="Rizky Firmansyah"
-    maintainer_email="rizky.firmansyah@wri.org"
+    maintainer="Rizky Firmansyah",
+    maintainer_email="rizky.firmansyah@wri.org",
     long_description=open("README.rst").read(),
     license="BSD",
     url="http://github.com/rizkyfirmansyah/geonode-user-messages",
