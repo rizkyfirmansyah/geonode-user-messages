@@ -22,3 +22,10 @@ Once you have the ``user-messages`` installed, hook up the URLs::
     )
 
 Now all you need to do is wire up some templates.
+
+Package Installation
+-----------
+
+Add this block in your requirements.txt
+
+    -e git+https://github.com/rizkyfirmansyah/geonode-user-messages@master#egg=geonode-user-messages
