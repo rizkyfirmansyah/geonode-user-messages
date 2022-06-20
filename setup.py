@@ -13,7 +13,7 @@ setup(
     maintainer_email="rizky.firmansyah@wri.org"
     long_description=open("README.rst").read(),
     license="BSD",
-    url="http://github.com/GeoNode/geonode-user-messages",
+    url="http://github.com/rizkyfirmansyah/geonode-user-messages",
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
