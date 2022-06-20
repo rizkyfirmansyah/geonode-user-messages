@@ -91,7 +91,7 @@ class NewMessageForm(forms.Form):
 
 class MessageReplyForm(forms.Form):
 
-    content = forms.CharField(label=_("Content"), widget=forms.Textarea)
+    content = forms.CharField(label=_("Content"), widget=TinyMCE())
 
     def __init__(self, *args, **kwargs):
         self.thread = kwargs.pop("thread")
