@@ -46,7 +46,7 @@ class NewMessageForm(forms.Form):
                 Q(group__user=self.sender)
             ).distinct().order_by('title')
 
-            self.fields["to_groups"].queryset = [(i.slug, i.title) for i in results]
+            self.fields["to_groups"].queryset = results
 
         self.fields["to_users"].queryset = get_user_model().objects.exclude(
             username="AnonymousUser").exclude(
